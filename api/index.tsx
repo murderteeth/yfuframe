@@ -18,10 +18,9 @@ function parseHost(url: string): string {
   : `${urlObj.protocol}//${urlObj.hostname}`
 }
 
-// read the number of files in ./public/slides
-// return the value
 async function countSlides() {
-  const files = await readdir(join('./public/slides'))
+  const path = join(process.cwd(), 'public/slides')
+  const files = await readdir(path)
   return files.length
 }
 
