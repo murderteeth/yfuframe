@@ -37,10 +37,9 @@ app.frame('/', async (c) => {
   const { buttonValue, status } = c
   const imgIndex = buttonValue || 0
   const nextIndex = (Number(imgIndex) + 1) % slideCount
-  console.log({ imgIndex, nextIndex, slideCount, status })
   const imgSrc = status === 'response' 
-  ? `${host}/slides/${imgIndex}.png`
-  : `${host}/title.png`
+  ? `${host}/slides/${imgIndex}.jpg`
+  : `${host}/title.jpg`
 
   return c.res({
     image: <div tw="w-full h-full flex items-center justify-center bg-red-400 text-white">
