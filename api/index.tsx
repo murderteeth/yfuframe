@@ -3,6 +3,7 @@ import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
 // import { neynar } from 'frog/hubs'
 import { handle } from 'frog/vercel'
+import { parseHost } from '../lib.js'
 
 // Uncomment to use Edge Runtime.
 // export const config = {
@@ -17,16 +18,17 @@ export const app = new Frog({
 })
 
 app.frame('/', (c) => {
+  const host = parseHost(c.req.url)
   const { buttonValue, status } = c
   const imgIndex = buttonValue || 0
   const nextIndex = (Number(imgIndex) + 1) % 4
   const imgSrc = status === 'response' 
-  ? `http://localhost:5173/slides/${imgIndex}.png`
-  : 'http://localhost:5173/title.png'
+  ? `${host}/slides/${imgIndex}.png`
+  : `${host}/title.png`
 
   return c.res({
     image: <div tw="w-full h-full flex items-center justify-center bg-red-400 text-white">
-        <img tw="w-full h-full" src={imgSrc} />
+        <img tw="w-full h-full" src={imgSrc} width={1200} height={630} />
       </div>,
     intents: [
       <Button value={String(nextIndex)}>Next</Button>,
