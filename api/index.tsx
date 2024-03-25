@@ -1,3 +1,5 @@
+import { readdir } from 'fs/promises'
+import { join } from 'path'
 import { Button, Frog } from 'frog'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
@@ -9,11 +11,18 @@ import { handle } from 'frog/vercel'
 //   runtime: 'edge',
 // }
 
-export function parseHost(url: string): string {
+function parseHost(url: string): string {
   const urlObj = new URL(url)
   return urlObj.port 
   ? `${urlObj.protocol}//${urlObj.hostname}:${urlObj.port}` 
   : `${urlObj.protocol}//${urlObj.hostname}`
+}
+
+// read the number of files in ./public/slides
+// return the value
+async function countSlides() {
+  const files = await readdir(join('./public/slides'))
+  return files.length
 }
 
 export const app = new Frog({
@@ -23,11 +32,13 @@ export const app = new Frog({
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 })
 
-app.frame('/', (c) => {
+app.frame('/', async (c) => {
+  const slideCount = await countSlides()
   const host = parseHost(c.req.url)
   const { buttonValue, status } = c
   const imgIndex = buttonValue || 0
-  const nextIndex = (Number(imgIndex) + 1) % 4
+  const nextIndex = (Number(imgIndex) + 1) % slideCount
+  console.log({ imgIndex, nextIndex, slideCount, status })
   const imgSrc = status === 'response' 
   ? `${host}/slides/${imgIndex}.png`
   : `${host}/title.png`
