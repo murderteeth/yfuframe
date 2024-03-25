@@ -3,12 +3,18 @@ import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
 // import { neynar } from 'frog/hubs'
 import { handle } from 'frog/vercel'
-import { parseHost } from '../lib.js'
 
 // Uncomment to use Edge Runtime.
 // export const config = {
 //   runtime: 'edge',
 // }
+
+export function parseHost(url: string): string {
+  const urlObj = new URL(url)
+  return urlObj.port 
+  ? `${urlObj.protocol}//${urlObj.hostname}:${urlObj.port}` 
+  : `${urlObj.protocol}//${urlObj.hostname}`
+}
 
 export const app = new Frog({
   assetsPath: '/',
