@@ -17,50 +17,20 @@ export const app = new Frog({
 })
 
 app.frame('/', (c) => {
-  const { buttonValue, inputText, status } = c
-  const fruit = inputText || buttonValue
+  const { buttonValue, status } = c
+  const imgIndex = buttonValue || 0
+  const nextIndex = (Number(imgIndex) + 1) % 4
+  const imgSrc = status === 'response' 
+  ? `http://localhost:5173/slides/${imgIndex}.png`
+  : 'http://localhost:5173/title.png'
+
   return c.res({
-    image: (
-      <div
-        style={{
-          alignItems: 'center',
-          background:
-            status === 'response'
-              ? 'linear-gradient(to right, #432889, #17101F)'
-              : 'black',
-          backgroundSize: '100% 100%',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'nowrap',
-          height: '100%',
-          justifyContent: 'center',
-          textAlign: 'center',
-          width: '100%',
-        }}
-      >
-        <div
-          style={{
-            color: 'white',
-            fontSize: 60,
-            fontStyle: 'normal',
-            letterSpacing: '-0.025em',
-            lineHeight: 1.4,
-            marginTop: 30,
-            padding: '0 120px',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          {status === 'response'
-            ? `Nice choice.${fruit ? ` ${fruit.toUpperCase()}!!` : ''}`
-            : 'Welcome!'}
-        </div>
-      </div>
-    ),
+    image: <div tw="w-full h-full flex items-center justify-center bg-red-400 text-white">
+        <img tw="w-full h-full" src={imgSrc} />
+      </div>,
     intents: [
-      <Button value="apples">Apples</Button>,
-      <Button value="oranges">Oranges</Button>,
-      <Button.Link href="https://zora.co/collect/zora:0x55f5a5d980992e01256d86e7ef03a22fd5fe84af/1">Mint</Button.Link>,
-      status === 'response' && <Button.Reset>Reset</Button.Reset>,
+      <Button value={String(nextIndex)}>Next</Button>,
+      <Button.Link href="https://zora.co/collect/eth:0xba7b81717ece26237d400552c27fd172b48cd959/4">Mint</Button.Link>,
     ],
   })
 })
