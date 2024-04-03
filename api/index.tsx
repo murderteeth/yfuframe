@@ -35,9 +35,11 @@ app.frame('/', async (c) => {
   const slideCount = await countSlides()
   const host = parseHost(c.req.url)
   const { buttonValue, status } = c
-  const imgIndex = buttonValue || 0
-  const nextIndex = (Number(imgIndex) + 1) % slideCount
-  const imgSrc = status === 'response' 
+  const imgIndex = buttonValue || '0'
+  const nextIndex = status === 'response'
+  ? (Number(imgIndex) + 1) % slideCount
+  : 0
+  const imgSrc = status === 'response'
   ? `${host}/slides/${imgIndex}.jpg`
   : `${host}/title.jpg`
 
