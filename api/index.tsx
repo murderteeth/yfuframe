@@ -49,7 +49,7 @@ app.frame('/', async (c) => {
       </div>,
     intents: [
       <Button value={String(nextIndex)}>Next</Button>,
-      <Button.Link href="https://zora.co/collect/eth:0xba7b81717ece26237d400552c27fd172b48cd959/4">Mint</Button.Link>,
+      <Button.Link href="https://zora.co/collect/base:0x39adafad9fde221725b975b4adae8b8f2dfa6d4b/1">Mint</Button.Link>,
     ],
   })
 })
