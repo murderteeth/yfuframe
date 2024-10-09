@@ -42,8 +42,9 @@ app.frame('/', async (c) => {
   const imgSrc = status === 'response'
   ? `${host}/slides/${imgIndex}.jpg`
   : `${host}/title.jpg`
-
+0
   return c.res({
+    title: 'Yearn YFU NFT',
     image: <div tw="w-full h-full flex items-center justify-center bg-red-400 text-white">
         <img tw="w-full h-full" src={imgSrc} width={1200} height={630} />
       </div>,
